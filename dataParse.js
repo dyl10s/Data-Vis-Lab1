@@ -3,6 +3,10 @@ var startYear = 2000;
 var endYear = 2019;
 var chartOne = null;
 
+window.onresize = function() {
+    LoadCharts();
+}
+
 d3.csv("banklist.csv", csvLoadDone);
 
 function csvLoadDone(data) {
@@ -22,17 +26,18 @@ function LoadCharts() {
             2000 + parseInt(loadedData[i]["Closing Date"].split("-")[2]) >= startYear &&
             2000 + parseInt(loadedData[i]["Closing Date"].split("-")[2]) <= endYear
         ) {
-
-
-            if (!uniqueStates.includes(loadedData[i].ST)) {
-                uniqueStates.push(loadedData[i].ST)
-                stateCounts.push(1);
-            } else {
-                stateCounts[uniqueStates.indexOf(loadedData[i].ST)] += 1;
+            if (loadedData[i].ST != "PR") {
+                if (!uniqueStates.includes(loadedData[i].ST)) {
+                    uniqueStates.push(loadedData[i].ST)
+                    stateCounts.push(1);
+                } else {
+                    stateCounts[uniqueStates.indexOf(loadedData[i].ST)] += 1;
+                }
             }
-
         }
     }
+
+    Chart.defaults.global.defaultFontColor = 'white';
 
     if (chartOne) {
         chartOne.data.labels = uniqueStates;
@@ -47,8 +52,8 @@ function LoadCharts() {
                 datasets: [{
                     label: "Amount of Failed Banks",
                     data: stateCounts,
-                    backgroundColor: 'rgb(255, 99, 132)',
-                    borderColor: 'rgb(255, 99, 132)',
+                    backgroundColor: 'rgb(255, 0, 0)',
+                    borderColor: 'rgb(0, 0, 0)',
                 }]
             },
             options: {
@@ -67,6 +72,26 @@ function LoadCharts() {
         });
     }
 
+    //We are going to make our chart go from blue to red
+    var maxValue = Math.max.apply(Math, stateCounts);
+    var stateStyles = {};
+    uniqueStates.map(function(x) {
+        stateStyles[x] = { fill: 'rgb(' + (stateCounts[uniqueStates.indexOf(x)] / maxValue) * 255 + ', 0, 0)' };
+        return 0;
+    });
+
+    $('#chartTwo').remove();
+    $('#chartTwoBox').append("<div id='chartTwo'></div>");
+
+    //Generate State Map
+    $('#chartTwo').usmap({
+        stateStyles: { fill: 'black' },
+        stateHoverStyles: { fill: 'black' },
+        stateHoverAnimation: 0,
+        showLabels: false,
+        stateSpecificStyles: stateStyles,
+        stateSpecificHoverStyles: stateStyles
+    });
 }
 
 function startYearChanged() {

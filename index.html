@@ -1,58 +1,85 @@
 <html>
 
 <head>
+    <!-- Scripts for styling -->
     <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha256-pasqAKBDmFT4eHoN2ndd6lN370kFiGUFyTiUHWhU7k8=" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js" integrity="sha384-6khuMg9gaYr5AxOqhkVIODVIvm9ynTT5J4V1cfthmT+emCG6yVmEZsRHdxlotUnm" crossorigin="anonymous"></script>
-
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
-    <script src="https://d3js.org/d3.v4.js"></script>
-    <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
-    <script src="https://d3js.org/d3-geo-projection.v2.min.js"></script>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="main.css" />
+
+    <!-- Scripts for charting -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+    <script src="https://d3js.org/d3.v4.js"></script>
+    <script src="us-map-dev/lib/raphael.js"></script>
+    <script src="us-map-dev/jquery.usmap.js"></script>
 </head>
 
-<body class="container-fluid px-5">
-    <h2>Step 1: Defining a Goal and Data Set</h2>
-    <p>
-        The data set I will be using is from the FDIC (Federal Deposit Insurance Corporation). I will be looking at all of the failed banks from October 13th, 2000 to November 1st 2019. With this data I will be looking to see if there is a relationship between
-        the time of year and when a bank fails. On top of this I will also create a graph displaying which states have the highest failing rate and see if the location of the bank has anything to do with the failure rate.
-    </p>
-
-    <div class="row justify-content-center text-center" id="chartOneFilters">
-        <div class="col-11">
-            <div class="row justify-content-center">
+<body>
+    <nav class="navbar navbar-dark bg-primary sticky-top">
+        <a class="navbar-brand" href="#">Dylan Strohschein - Lab 1 (Analizing Bank Failures)</a>
+    </nav>
+    <div class="container-fluid">
+        <div class="row justify-content-center text-center">
+            <div class="col-md-3 col-sm-12 bg-dark text-white">
                 <div class="col-12">
                     <h2>Filters</h2>
+                    <p>
+                        Both charts can be filtered by the start and end date below. This will allow you to be able to zoom in on specific time frames.
+                    </p>
                 </div>
-                <div class="col-3">
+                <div class="col-12">
                     <h4 id="startYearText">Start Year (2000)</h4>
                     <div class="addPadding">
                         <input id="startYear" type="range" class="custom-range" min="2000" max="2019" value="2000" oninput="startYearChanged()">
                     </div>
                 </div>
-                <div class="col-3">
+                <div class="col-12">
                     <h4 id="endYearText">End Year (2019)</h4>
                     <div class="addPadding">
                         <input id="endYear" type="range" class="custom-range" min="2000" max="2019" value="2019" oninput="endYearChanged()">
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
+            <div class="col-md-9 col-sm-12 bg-secondary text-white">
+                <h2>Defining a Goal and Data Set</h2>
+                <p>
+                    The data set I will be using is from the FDIC (Federal Deposit Insurance Corporation). I will be looking at all the failed banks from October 13th, 2000 to November 1st, 2019. With this data I will be looking to see if there are major outlier states that
+                    have a lot of bank failures as well as seeing if the location of the state effects how many banks fail.
+                </p>
 
-    <div class="row">
-        <div class="col-12">
-            <span id="chartOne">
-                <canvas id="failedBankTime"></canvas>
-            </span>
+                <div class="row">
+                    <div class="col-12">
+                        <span id="chartOne">
+                        <canvas id="failedBankTime"></canvas>
+                    </span>
+                    </div>
+                    <div class="col-xl-6 col-lg-8 col-sm-12" id="chartTwoBox">
+                        <div id="chartTwo justify-content-center">
+                        </div>
+                    </div>
+                    <div class="col-xl-6 col-lg-4 col-sm-12">
+                        <h2>Chart Details</h2>
+                        <p>
+                            The chart above shows the breakdown of states and the number of banks that have failed in each one. This allows you to easily view each individual states and their exact number of failed banks.
+                        </p>
+                        <p>
+                            The second chart to the left gives you a heatmap of the number of failed banks. Black states have 0 or very few failed banks, and the red states have the most.
+                        </p>
+                    </div>
+                    <div class="col-12">
+                        <h2>Summary</h2>
+                        Overall, I think after doing this lab I feel like more data from other sources would be helpful. One of the main questions is how many banks are in each state. Although states like Illinois, Georgia and Florida seem to stick out more then the others it
+                        makes me wonder if thoughts states just have more banks in general. The geo-chart did provide me with an interesting bit of information that didn’t really cross my mind when looking at the details in the bar chart. 2 of the 3 states
+                        that had the large outliers of failures are right next to each other. My one wild guess about maybe why the stats in the south south-east have a high rate of failure is because that’s where a lot of people pick to retire. I wonder
+                        if there is so much competition in these states that a lot of banks just come and go. The filters also provided some cool information. Recently there have not actually been to many bank failures but back around 2010 it seemed to
+                        be very bad.
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="col-12">
-            <svg id="my_dataviz" width="400" height="300"></svg>
-        </div>
-    </div>
 
+    </div>
     <script src="dataParse.js"></script>
 </body>
 

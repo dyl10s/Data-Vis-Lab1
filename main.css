@@ -5,6 +5,13 @@
     display: inline-block;
 }
 
+#chartTwo {
+    width: 100%;
+    height: 400px;
+    display: inline-block;
+    margin: 0 auto;
+}
+
 #chartOneFilters {
     width: 100%;
     background-color: lightblue;
