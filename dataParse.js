@@ -12,7 +12,7 @@ window.onresize = function() {
     LoadCharts();
 }
 
-d3.csv("banklist.csv", csvLoadDone);
+d3.csv("https://www.fdic.gov/bank/individual/failed/banklist.csv", csvLoadDone);
 
 function csvLoadDone(data) {
     loadedData = data;
