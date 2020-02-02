@@ -28,16 +28,28 @@
                         Both charts can be filtered by the start and end date below. This will allow you to be able to zoom in on specific time frames.
                     </p>
                 </div>
-                <div class="col-12">
+                <div class="col-12 pb-4">
                     <h4 id="startYearText">Start Year (2000)</h4>
                     <div class="addPadding">
                         <input id="startYear" type="range" class="custom-range" min="2000" max="2019" value="2000" oninput="startYearChanged()">
                     </div>
                 </div>
-                <div class="col-12">
+                <div class="col-12 pb-4">
                     <h4 id="endYearText">End Year (2019)</h4>
                     <div class="addPadding">
                         <input id="endYear" type="range" class="custom-range" min="2000" max="2019" value="2019" oninput="endYearChanged()">
+                    </div>
+                </div>
+                <div class="col-12 pb-4">
+                    <h4 id="startMonthText">Start Month (1)</h4>
+                    <div class="addPadding">
+                        <input id="startMonth" type="range" class="custom-range" min="1" max="12" value="1" oninput="startMonthChanged()">
+                    </div>
+                </div>
+                <div class="col-12 pb-4">
+                    <h4 id="endMonthText">End Month (12)</h4>
+                    <div class="addPadding">
+                        <input id="endMonth" type="range" class="custom-range" min="1" max="12" value="12" oninput="endMonthChanged()">
                     </div>
                 </div>
             </div>

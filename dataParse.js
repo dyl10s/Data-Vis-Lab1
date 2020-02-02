@@ -1,6 +1,11 @@
 var loadedData = {};
+
 var startYear = 2000;
 var endYear = 2019;
+
+var startMonth = 1;
+var endMonth = 12;
+
 var chartOne = null;
 
 window.onresize = function() {
@@ -24,7 +29,9 @@ function LoadCharts() {
         //Check to make sure this entry follows out filters
         if (
             2000 + parseInt(loadedData[i]["Closing Date"].split("-")[2]) >= startYear &&
-            2000 + parseInt(loadedData[i]["Closing Date"].split("-")[2]) <= endYear
+            2000 + parseInt(loadedData[i]["Closing Date"].split("-")[2]) <= endYear &&
+            (new Date(loadedData[i]["Closing Date"])).getMonth() + 1 >= startMonth &&
+            (new Date(loadedData[i]["Closing Date"])).getMonth() + 1 <= endMonth
         ) {
             if (loadedData[i].ST != "PR") {
                 if (!uniqueStates.includes(loadedData[i].ST)) {
@@ -40,7 +47,7 @@ function LoadCharts() {
     Chart.defaults.global.defaultFontColor = 'white';
 
     if (chartOne) {
-        chartOne.data.labels = uniqueStates;
+        chartOne.data.labels = uniqueStates.map(function(f) { return abbrState(f, 'name') });
         chartOne.data.datasets[0].data = stateCounts;
         chartOne.update();
     } else {
@@ -103,6 +110,18 @@ function startYearChanged() {
 function endYearChanged() {
     endYear = $('#endYear').val();
     $('#endYearText').text('End Year (' + endYear + ')');
+    LoadCharts();
+}
+
+function startMonthChanged() {
+    startMonth = $('#startMonth').val();
+    $('#startMonthText').text('Start Month (' + startMonth + ')');
+    LoadCharts();
+}
+
+function endMonthChanged() {
+    endMonth = $('#endMonth').val();
+    $('#endMonthText').text('End Month (' + endMonth + ')');
     LoadCharts();
 }
 
