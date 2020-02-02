@@ -27,11 +27,13 @@ function LoadCharts() {
     for (var i = 0; i < loadedData.length; i++) {
 
         //Check to make sure this entry follows out filters
+        var curDate = loadedData[i]["Closing Date"].split("-")[1] + " " + loadedData[i]["Closing Date"].split("-")[0].toString() + ", 20" + loadedData[i]["Closing Date"].split("-")[2].toString();
+        curDate = new Date(curDate);
         if (
-            2000 + parseInt(loadedData[i]["Closing Date"].split("-")[2]) >= startYear &&
-            2000 + parseInt(loadedData[i]["Closing Date"].split("-")[2]) <= endYear &&
-            (new Date(loadedData[i]["Closing Date"])).getMonth() + 1 >= startMonth &&
-            (new Date(loadedData[i]["Closing Date"])).getMonth() + 1 <= endMonth
+            curDate.getFullYear() >= startYear &&
+            curDate.getFullYear() <= endYear &&
+            curDate.getMonth() + 1 >= startMonth &&
+            curDate.getMonth() + 1 <= endMonth
         ) {
             if (loadedData[i].ST != "PR") {
                 if (!uniqueStates.includes(loadedData[i].ST)) {
